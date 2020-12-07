@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x9766E084FB0F43D8 (ph10@cam.ac.uk)
 #
 Name     : pcre2
-Version  : 10.35
-Release  : 28
-URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.35/pcre2-10.35.tar.gz
-Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.35/pcre2-10.35.tar.gz
-Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.35/pcre2-10.35.tar.gz.sig
+Version  : 10.36
+Release  : 29
+URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz
+Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz
+Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz.sig
 Summary  : PCRE2 - Perl compatible regular expressions C library (2nd API) with 32 bit character support
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -94,15 +94,15 @@ man components for the pcre2 package.
 
 
 %prep
-%setup -q -n pcre2-10.35
-cd %{_builddir}/pcre2-10.35
+%setup -q -n pcre2-10.36
+cd %{_builddir}/pcre2-10.36
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605198307
+export SOURCE_DATE_EPOCH=1607368671
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -143,11 +143,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1605198307
+export SOURCE_DATE_EPOCH=1607368671
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
-cp %{_builddir}/pcre2-10.35/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/b055467930e33d0ffda06b6ca23246ea705c1db7
-cp %{_builddir}/pcre2-10.35/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
+cp %{_builddir}/pcre2-10.36/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 %make_install
 
 %files
@@ -270,20 +269,19 @@ cp %{_builddir}/pcre2-10.35/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/p
 %files extras
 %defattr(-,root,root,-)
 /usr/lib64/libpcre2-32.so.0
-/usr/lib64/libpcre2-32.so.0.10.0
 
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libpcre2-16.so.0
-/usr/lib64/libpcre2-16.so.0.10.0
+/usr/lib64/libpcre2-16.so.0.10.1
+/usr/lib64/libpcre2-32.so.0.10.1
 /usr/lib64/libpcre2-8.so.0
-/usr/lib64/libpcre2-8.so.0.10.0
+/usr/lib64/libpcre2-8.so.0.10.1
 /usr/lib64/libpcre2-posix.so.2
 /usr/lib64/libpcre2-posix.so.2.0.3
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/pcre2/b055467930e33d0ffda06b6ca23246ea705c1db7
 /usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 
 %files man
