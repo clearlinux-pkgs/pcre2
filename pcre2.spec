@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.36
-Release  : 29
+Release  : 30
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz.sig
@@ -20,7 +20,6 @@ Requires: pcre2-man = %{version}-%{release}
 BuildRequires : bzip2-dev
 BuildRequires : pkgconfig(valgrind)
 BuildRequires : zlib-dev
-Patch1: cve-2017-8399.nopatch
 
 %description
 ------------------------------------------------------------------
@@ -102,12 +101,12 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1607368671
+export SOURCE_DATE_EPOCH=1607447732
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -mshstk "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -143,9 +142,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1607368671
+export SOURCE_DATE_EPOCH=1607447732
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
+cp %{_builddir}/pcre2-10.36/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3bd4456468e9552e27ef44ab7dcb1afa3c63669a
 cp %{_builddir}/pcre2-10.36/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 %make_install
 
@@ -269,12 +269,12 @@ cp %{_builddir}/pcre2-10.36/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/p
 %files extras
 %defattr(-,root,root,-)
 /usr/lib64/libpcre2-32.so.0
+/usr/lib64/libpcre2-32.so.0.10.1
 
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libpcre2-16.so.0
 /usr/lib64/libpcre2-16.so.0.10.1
-/usr/lib64/libpcre2-32.so.0.10.1
 /usr/lib64/libpcre2-8.so.0
 /usr/lib64/libpcre2-8.so.0.10.1
 /usr/lib64/libpcre2-posix.so.2
@@ -282,6 +282,7 @@ cp %{_builddir}/pcre2-10.36/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/p
 
 %files license
 %defattr(0644,root,root,0755)
+/usr/share/package-licenses/pcre2/3bd4456468e9552e27ef44ab7dcb1afa3c63669a
 /usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 
 %files man
