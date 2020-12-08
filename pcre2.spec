@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.36
-Release  : 31
+Release  : 32
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.36/pcre2-10.36.tar.gz.sig
@@ -97,16 +97,19 @@ man components for the pcre2 package.
 cd %{_builddir}/pcre2-10.36
 
 %build
+## build_prepend content
+export CFLAGS="$CFLAGS -mshstk"
+## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1607447732
+export SOURCE_DATE_EPOCH=1607461126
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -mshstk "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -142,7 +145,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1607447732
+export SOURCE_DATE_EPOCH=1607461126
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
 cp %{_builddir}/pcre2-10.36/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3bd4456468e9552e27ef44ab7dcb1afa3c63669a
