@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.37
-Release  : 33
+Release  : 34
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz.sig
@@ -105,7 +105,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1622127085
+export SOURCE_DATE_EPOCH=1622135129
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -146,7 +146,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1622127085
+export SOURCE_DATE_EPOCH=1622135129
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
 cp %{_builddir}/pcre2-10.37/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
@@ -272,12 +272,12 @@ cp %{_builddir}/pcre2-10.37/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/p
 %files extras
 %defattr(-,root,root,-)
 /usr/lib64/libpcre2-32.so.0
+/usr/lib64/libpcre2-32.so.0.10.2
 
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libpcre2-16.so.0
 /usr/lib64/libpcre2-16.so.0.10.2
-/usr/lib64/libpcre2-32.so.0.10.2
 /usr/lib64/libpcre2-8.so.0
 /usr/lib64/libpcre2-8.so.0.10.2
 /usr/lib64/libpcre2-posix.so.3
