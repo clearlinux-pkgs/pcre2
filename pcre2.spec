@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.37
-Release  : 35
+Release  : 36
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz.sig
@@ -108,15 +108,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1626383192
+export SOURCE_DATE_EPOCH=1627404687
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
 export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
@@ -167,9 +167,10 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1626383192
+export SOURCE_DATE_EPOCH=1627404687
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
+cp %{_builddir}/pcre2-10.37/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb
 cp %{_builddir}/pcre2-10.37/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 pushd ../buildavx2/
 %make_install_avx2
@@ -301,6 +302,8 @@ popd
 
 %files extras
 %defattr(-,root,root,-)
+/usr/lib64/haswell/libpcre2-32.so.0
+/usr/lib64/haswell/libpcre2-32.so.0.10.2
 /usr/lib64/libpcre2-32.so.0
 /usr/lib64/libpcre2-32.so.0.10.2
 
@@ -308,8 +311,6 @@ popd
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libpcre2-16.so.0
 /usr/lib64/haswell/libpcre2-16.so.0.10.2
-/usr/lib64/haswell/libpcre2-32.so.0
-/usr/lib64/haswell/libpcre2-32.so.0.10.2
 /usr/lib64/haswell/libpcre2-8.so.0
 /usr/lib64/haswell/libpcre2-8.so.0.10.2
 /usr/lib64/haswell/libpcre2-posix.so.3
@@ -323,6 +324,7 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
+/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb
 /usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 
 %files man
