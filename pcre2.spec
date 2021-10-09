@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.37
-Release  : 36
+Release  : 37
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz.sig
@@ -14,6 +14,7 @@ Summary  : PCRE2 - Perl compatible regular expressions C library (2nd API) with 
 Group    : Development/Tools
 License  : BSD-3-Clause
 Requires: pcre2-bin = %{version}-%{release}
+Requires: pcre2-filemap = %{version}-%{release}
 Requires: pcre2-lib = %{version}-%{release}
 Requires: pcre2-license = %{version}-%{release}
 Requires: pcre2-man = %{version}-%{release}
@@ -34,6 +35,7 @@ PCRE2 is available in three alternative formats from:
 Summary: bin components for the pcre2 package.
 Group: Binaries
 Requires: pcre2-license = %{version}-%{release}
+Requires: pcre2-filemap = %{version}-%{release}
 
 %description bin
 bin components for the pcre2 package.
@@ -68,10 +70,19 @@ Group: Default
 extras components for the pcre2 package.
 
 
+%package filemap
+Summary: filemap components for the pcre2 package.
+Group: Default
+
+%description filemap
+filemap components for the pcre2 package.
+
+
 %package lib
 Summary: lib components for the pcre2 package.
 Group: Libraries
 Requires: pcre2-license = %{version}-%{release}
+Requires: pcre2-filemap = %{version}-%{release}
 
 %description lib
 lib components for the pcre2 package.
@@ -108,15 +119,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1627404687
+export SOURCE_DATE_EPOCH=1633812993
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
 export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
@@ -146,11 +157,11 @@ pushd ../buildavx2/
 ## build_prepend content
 export CFLAGS="$CFLAGS -mshstk"
 ## build_prepend end
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export FFLAGS="$FFLAGS -m64 -march=haswell"
-export FCFLAGS="$FCFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static --enable-pcre2-16 \
 --enable-pcre2-32 \
 --enable-unicode \
@@ -167,13 +178,14 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1627404687
+export SOURCE_DATE_EPOCH=1633812993
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
 cp %{_builddir}/pcre2-10.37/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb
 cp %{_builddir}/pcre2-10.37/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 pushd ../buildavx2/
-%make_install_avx2
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 
@@ -182,20 +194,15 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/haswell/pcre2grep
-/usr/bin/haswell/pcre2test
 /usr/bin/pcre2-config
 /usr/bin/pcre2grep
 /usr/bin/pcre2test
+/usr/share/clear/optimized-elf/bin*
 
 %files dev
 %defattr(-,root,root,-)
 /usr/include/pcre2.h
 /usr/include/pcre2posix.h
-/usr/lib64/haswell/libpcre2-16.so
-/usr/lib64/haswell/libpcre2-32.so
-/usr/lib64/haswell/libpcre2-8.so
-/usr/lib64/haswell/libpcre2-posix.so
 /usr/lib64/libpcre2-16.so
 /usr/lib64/libpcre2-32.so
 /usr/lib64/libpcre2-8.so
@@ -302,25 +309,22 @@ popd
 
 %files extras
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libpcre2-32.so.0
-/usr/lib64/haswell/libpcre2-32.so.0.10.2
 /usr/lib64/libpcre2-32.so.0
 /usr/lib64/libpcre2-32.so.0.10.2
 
+%files filemap
+%defattr(-,root,root,-)
+/usr/share/clear/filemap/filemap-pcre2
+
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libpcre2-16.so.0
-/usr/lib64/haswell/libpcre2-16.so.0.10.2
-/usr/lib64/haswell/libpcre2-8.so.0
-/usr/lib64/haswell/libpcre2-8.so.0.10.2
-/usr/lib64/haswell/libpcre2-posix.so.3
-/usr/lib64/haswell/libpcre2-posix.so.3.0.0
 /usr/lib64/libpcre2-16.so.0
 /usr/lib64/libpcre2-16.so.0.10.2
 /usr/lib64/libpcre2-8.so.0
 /usr/lib64/libpcre2-8.so.0.10.2
 /usr/lib64/libpcre2-posix.so.3
 /usr/lib64/libpcre2-posix.so.3.0.0
+/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)
