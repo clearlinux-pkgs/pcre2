@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.37
-Release  : 42
+Release  : 43
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz.sig
@@ -119,15 +119,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1634391774
+export SOURCE_DATE_EPOCH=1656305855
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mno-vzeroupper -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 export CFLAGS_GENERATE="$CFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
 export FCFLAGS_GENERATE="$FCFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
 export FFLAGS_GENERATE="$FFLAGS -fprofile-generate -fprofile-dir=/var/tmp/pgo -fprofile-update=atomic "
@@ -157,9 +157,9 @@ pushd ../buildavx2/
 ## build_prepend content
 export CFLAGS="$CFLAGS -mshstk"
 ## build_prepend end
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
-export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
 export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
 export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static --enable-pcre2-16 \
@@ -178,7 +178,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1634391774
+export SOURCE_DATE_EPOCH=1656305855
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
 cp %{_builddir}/pcre2-10.37/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb
@@ -187,7 +187,7 @@ pushd ../buildavx2/
 %make_install_v3
 popd
 %make_install
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -203,6 +203,10 @@ popd
 %defattr(-,root,root,-)
 /usr/include/pcre2.h
 /usr/include/pcre2posix.h
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-16.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-8.so
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-posix.so
 /usr/lib64/libpcre2-16.so
 /usr/lib64/libpcre2-32.so
 /usr/lib64/libpcre2-8.so
@@ -309,6 +313,8 @@ popd
 
 %files extras
 %defattr(-,root,root,-)
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0.10.2
 /usr/lib64/libpcre2-32.so.0
 /usr/lib64/libpcre2-32.so.0.10.2
 
@@ -318,13 +324,18 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-16.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-16.so.0.10.2
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-8.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-8.so.0.10.2
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-posix.so.3
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-posix.so.3.0.0
 /usr/lib64/libpcre2-16.so.0
 /usr/lib64/libpcre2-16.so.0.10.2
 /usr/lib64/libpcre2-8.so.0
 /usr/lib64/libpcre2-8.so.0.10.2
 /usr/lib64/libpcre2-posix.so.3
 /usr/lib64/libpcre2-posix.so.3.0.0
-/usr/share/clear/optimized-elf/lib*
 
 %files license
 %defattr(0644,root,root,0755)
