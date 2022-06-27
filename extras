@@ -1,4 +1,5 @@
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0.10.2
-/usr/lib64/libpcre2-32.so.0
-/usr/lib64/libpcre2-32.so.0.10.2
+# pcre2test requires this library, so it's not worth shipping it in -extras...
+#/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0
+#/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0.10.2
+#/usr/lib64/libpcre2-32.so.0
+#/usr/lib64/libpcre2-32.so.0.10.2

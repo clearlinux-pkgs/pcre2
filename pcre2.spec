@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.37
-Release  : 43
+Release  : 44
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz.sig
@@ -62,14 +62,6 @@ Requires: pcre2-man = %{version}-%{release}
 doc components for the pcre2 package.
 
 
-%package extras
-Summary: extras components for the pcre2 package.
-Group: Default
-
-%description extras
-extras components for the pcre2 package.
-
-
 %package filemap
 Summary: filemap components for the pcre2 package.
 Group: Default
@@ -119,7 +111,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656305855
+export SOURCE_DATE_EPOCH=1656310256
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -178,7 +170,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1656305855
+export SOURCE_DATE_EPOCH=1656310256
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
 cp %{_builddir}/pcre2-10.37/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb
@@ -311,13 +303,6 @@ popd
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/pcre2/*
 
-%files extras
-%defattr(-,root,root,-)
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0
-/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0.10.2
-/usr/lib64/libpcre2-32.so.0
-/usr/lib64/libpcre2-32.so.0.10.2
-
 %files filemap
 %defattr(-,root,root,-)
 /usr/share/clear/filemap/filemap-pcre2
@@ -326,12 +311,16 @@ popd
 %defattr(-,root,root,-)
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-16.so.0
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-16.so.0.10.2
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0
+/usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-32.so.0.10.2
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-8.so.0
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-8.so.0.10.2
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-posix.so.3
 /usr/lib64/glibc-hwcaps/x86-64-v3/libpcre2-posix.so.3.0.0
 /usr/lib64/libpcre2-16.so.0
 /usr/lib64/libpcre2-16.so.0.10.2
+/usr/lib64/libpcre2-32.so.0
+/usr/lib64/libpcre2-32.so.0.10.2
 /usr/lib64/libpcre2-8.so.0
 /usr/lib64/libpcre2-8.so.0.10.2
 /usr/lib64/libpcre2-posix.so.3
