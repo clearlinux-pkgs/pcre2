@@ -6,7 +6,7 @@
 #
 Name     : pcre2
 Version  : 10.37
-Release  : 47
+Release  : 48
 URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
 Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz.sig
@@ -19,6 +19,11 @@ Requires: pcre2-lib = %{version}-%{release}
 Requires: pcre2-license = %{version}-%{release}
 Requires: pcre2-man = %{version}-%{release}
 BuildRequires : bzip2-dev
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : pkgconfig(valgrind)
 BuildRequires : zlib-dev
 
@@ -53,6 +58,17 @@ Requires: pcre2 = %{version}-%{release}
 dev components for the pcre2 package.
 
 
+%package dev32
+Summary: dev32 components for the pcre2 package.
+Group: Default
+Requires: pcre2-lib32 = %{version}-%{release}
+Requires: pcre2-bin = %{version}-%{release}
+Requires: pcre2-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the pcre2 package.
+
+
 %package doc
 Summary: doc components for the pcre2 package.
 Group: Documentation
@@ -80,6 +96,15 @@ Requires: pcre2-filemap = %{version}-%{release}
 lib components for the pcre2 package.
 
 
+%package lib32
+Summary: lib32 components for the pcre2 package.
+Group: Default
+Requires: pcre2-license = %{version}-%{release}
+
+%description lib32
+lib32 components for the pcre2 package.
+
+
 %package license
 Summary: license components for the pcre2 package.
 Group: Default
@@ -100,6 +125,9 @@ man components for the pcre2 package.
 %setup -q -n pcre2-10.37
 cd %{_builddir}/pcre2-10.37
 pushd ..
+cp -a pcre2-10.37 build32
+popd
+pushd ..
 cp -a pcre2-10.37 buildavx2
 popd
 
@@ -111,7 +139,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656310256
+export SOURCE_DATE_EPOCH=1662474958
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -144,6 +172,21 @@ CFLAGS="${CFLAGS_USE}" CXXFLAGS="${CXXFLAGS_USE}" FFLAGS="${FFLAGS_USE}" FCFLAGS
 --enable-jit=auto
 make  %{?_smp_mflags}
 
+pushd ../build32/
+## build_prepend content
+export CFLAGS="$CFLAGS -mshstk"
+## build_prepend end
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
+%configure --disable-static --enable-pcre2-16 \
+--enable-pcre2-32 \
+--enable-unicode \
+--enable-jit=auto   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make  %{?_smp_mflags}
+popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 ## build_prepend content
@@ -166,15 +209,32 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
+cd ../build32;
+make %{?_smp_mflags} check || :
 cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1656310256
+export SOURCE_DATE_EPOCH=1662474958
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
-cp %{_builddir}/pcre2-10.37/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb
-cp %{_builddir}/pcre2-10.37/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
+cp %{_builddir}/pcre2-%{version}/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb || :
+cp %{_builddir}/pcre2-%{version}/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987 || :
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 pushd ../buildavx2/
 %make_install_v3
 popd
@@ -299,6 +359,21 @@ popd
 /usr/share/man/man3/pcre2syntax.3
 /usr/share/man/man3/pcre2unicode.3
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libpcre2-16.so
+/usr/lib32/libpcre2-32.so
+/usr/lib32/libpcre2-8.so
+/usr/lib32/libpcre2-posix.so
+/usr/lib32/pkgconfig/32libpcre2-16.pc
+/usr/lib32/pkgconfig/32libpcre2-32.pc
+/usr/lib32/pkgconfig/32libpcre2-8.pc
+/usr/lib32/pkgconfig/32libpcre2-posix.pc
+/usr/lib32/pkgconfig/libpcre2-16.pc
+/usr/lib32/pkgconfig/libpcre2-32.pc
+/usr/lib32/pkgconfig/libpcre2-8.pc
+/usr/lib32/pkgconfig/libpcre2-posix.pc
+
 %files doc
 %defattr(0644,root,root,0755)
 %doc /usr/share/doc/pcre2/*
@@ -325,6 +400,17 @@ popd
 /usr/lib64/libpcre2-8.so.0.10.2
 /usr/lib64/libpcre2-posix.so.3
 /usr/lib64/libpcre2-posix.so.3.0.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libpcre2-16.so.0
+/usr/lib32/libpcre2-16.so.0.10.2
+/usr/lib32/libpcre2-32.so.0
+/usr/lib32/libpcre2-32.so.0.10.2
+/usr/lib32/libpcre2-8.so.0
+/usr/lib32/libpcre2-8.so.0.10.2
+/usr/lib32/libpcre2-posix.so.3
+/usr/lib32/libpcre2-posix.so.3.0.0
 
 %files license
 %defattr(0644,root,root,0755)
