@@ -1,2 +1,6 @@
-Configure miss: JIT support on this hardware
-Configure miss: JIT support on this hardware
+Configure miss: gzopen in -lz
+Configure miss: libbz2
+Configure miss: whether Intel CET is enabled
+Configure miss: whether Intel CET is enabled
+Configure miss: whether Intel CET is enabled
+Configure miss: whether Intel CET is enabled
