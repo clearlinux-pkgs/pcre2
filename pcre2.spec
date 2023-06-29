@@ -6,11 +6,11 @@
 # Source0 file verified with key 0x9766E084FB0F43D8 (ph10@cam.ac.uk)
 #
 Name     : pcre2
-Version  : 10.37
-Release  : 54
-URL      : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
-Source0  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz
-Source1  : https://sourceforge.net/projects/pcre/files/pcre2/10.37/pcre2-10.37.tar.gz.sig
+Version  : 10.42
+Release  : 55
+URL      : https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.gz
+Source0  : https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.gz
+Source1  : https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.gz.sig
 Summary  : PCRE2 - Perl compatible regular expressions C library (2nd API) with 32 bit character support
 Group    : Development/Tools
 License  : BSD-3-Clause
@@ -37,8 +37,8 @@ PCRE2 is a re-working of the original PCRE1 library to provide an entirely new
 API. Since its initial release in 2015, there has been further development of
 the code and it now differs from PCRE1 in more than just the API. There are new
 features, and the internals have been improved. The original PCRE1 library is
-now obsolete and should not be used in new projects. The latest release of
-PCRE2 is available in three alternative formats from:
+now obsolete and no longer maintained. The latest release of PCRE2 is available
+in .tar.gz, tar.bz2, or .zip form from this GitHub repository:
 
 %package bin
 Summary: bin components for the pcre2 package.
@@ -116,13 +116,13 @@ man components for the pcre2 package.
 
 
 %prep
-%setup -q -n pcre2-10.37
-cd %{_builddir}/pcre2-10.37
+%setup -q -n pcre2-10.42
+cd %{_builddir}/pcre2-10.42
 pushd ..
-cp -a pcre2-10.37 build32
+cp -a pcre2-10.42 build32
 popd
 pushd ..
-cp -a pcre2-10.37 buildavx2
+cp -a pcre2-10.42 buildavx2
 popd
 
 %build
@@ -133,7 +133,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1685576554
+export SOURCE_DATE_EPOCH=1688062626
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -209,10 +209,9 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1685576554
+export SOURCE_DATE_EPOCH=1688062626
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
-cp %{_builddir}/pcre2-%{version}/LICENCE %{buildroot}/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb || :
 cp %{_builddir}/pcre2-%{version}/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987 || :
 pushd ../build32/
 %make_install32
@@ -371,33 +370,32 @@ popd
 
 %files lib
 %defattr(-,root,root,-)
-/V3/usr/lib64/libpcre2-16.so.0.10.2
-/V3/usr/lib64/libpcre2-32.so.0.10.2
-/V3/usr/lib64/libpcre2-8.so.0.10.2
-/V3/usr/lib64/libpcre2-posix.so.3.0.0
+/V3/usr/lib64/libpcre2-16.so.0.11.2
+/V3/usr/lib64/libpcre2-32.so.0.11.2
+/V3/usr/lib64/libpcre2-8.so.0.11.2
+/V3/usr/lib64/libpcre2-posix.so.3.0.4
 /usr/lib64/libpcre2-16.so.0
-/usr/lib64/libpcre2-16.so.0.10.2
+/usr/lib64/libpcre2-16.so.0.11.2
 /usr/lib64/libpcre2-32.so.0
-/usr/lib64/libpcre2-32.so.0.10.2
+/usr/lib64/libpcre2-32.so.0.11.2
 /usr/lib64/libpcre2-8.so.0
-/usr/lib64/libpcre2-8.so.0.10.2
+/usr/lib64/libpcre2-8.so.0.11.2
 /usr/lib64/libpcre2-posix.so.3
-/usr/lib64/libpcre2-posix.so.3.0.0
+/usr/lib64/libpcre2-posix.so.3.0.4
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libpcre2-16.so.0
-/usr/lib32/libpcre2-16.so.0.10.2
+/usr/lib32/libpcre2-16.so.0.11.2
 /usr/lib32/libpcre2-32.so.0
-/usr/lib32/libpcre2-32.so.0.10.2
+/usr/lib32/libpcre2-32.so.0.11.2
 /usr/lib32/libpcre2-8.so.0
-/usr/lib32/libpcre2-8.so.0.10.2
+/usr/lib32/libpcre2-8.so.0.11.2
 /usr/lib32/libpcre2-posix.so.3
-/usr/lib32/libpcre2-posix.so.3.0.0
+/usr/lib32/libpcre2-posix.so.3.0.4
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/pcre2/3005b2c68faac406829c8ea56376ddcb1ed0eabb
 /usr/share/package-licenses/pcre2/ff3ed70db4739b3c6747c7f624fe2bad70802987
 
 %files man
