@@ -53,6 +53,7 @@ libpcre2-16.so.0:pcre2_set_glob_escape_16
 libpcre2-16.so.0:pcre2_set_glob_separator_16
 libpcre2-16.so.0:pcre2_set_heap_limit_16
 libpcre2-16.so.0:pcre2_set_match_limit_16
+libpcre2-16.so.0:pcre2_set_max_pattern_compiled_length_16
 libpcre2-16.so.0:pcre2_set_max_pattern_length_16
 libpcre2-16.so.0:pcre2_set_max_varlookbehind_16
 libpcre2-16.so.0:pcre2_set_newline_16
@@ -128,6 +129,7 @@ libpcre2-32.so.0:pcre2_set_glob_escape_32
 libpcre2-32.so.0:pcre2_set_glob_separator_32
 libpcre2-32.so.0:pcre2_set_heap_limit_32
 libpcre2-32.so.0:pcre2_set_match_limit_32
+libpcre2-32.so.0:pcre2_set_max_pattern_compiled_length_32
 libpcre2-32.so.0:pcre2_set_max_pattern_length_32
 libpcre2-32.so.0:pcre2_set_max_varlookbehind_32
 libpcre2-32.so.0:pcre2_set_newline_32
@@ -203,6 +205,7 @@ libpcre2-8.so.0:pcre2_set_glob_escape_8
 libpcre2-8.so.0:pcre2_set_glob_separator_8
 libpcre2-8.so.0:pcre2_set_heap_limit_8
 libpcre2-8.so.0:pcre2_set_match_limit_8
+libpcre2-8.so.0:pcre2_set_max_pattern_compiled_length_8
 libpcre2-8.so.0:pcre2_set_max_pattern_length_8
 libpcre2-8.so.0:pcre2_set_max_varlookbehind_8
 libpcre2-8.so.0:pcre2_set_newline_8

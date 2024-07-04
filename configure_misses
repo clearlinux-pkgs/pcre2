@@ -1,17 +1,9 @@
-Configure miss: JIT support on this hardware
-Configure miss: JIT support on this hardware
-Configure miss: JIT support on this hardware
-Configure miss: JIT support on this hardware
 Configure miss: gcc option to enable large file support
 Configure miss: gcc option to enable large file support
 Configure miss: gcc option to enable large file support
 Configure miss: gzopen in -lz
-Configure miss: i686-generic-linux-gnu-file
 Configure miss: libbz2
 Configure miss: whether Intel CET is enabled
 Configure miss: whether Intel CET is enabled
 Configure miss: whether Intel CET is enabled
 Configure miss: whether Intel CET is enabled
-Configure miss: x86_64-generic-linux-gnu-file
-Configure miss: x86_64-generic-linux-gnu-file
-Configure miss: x86_64-generic-linux-gnu-file
