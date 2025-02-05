@@ -1,9 +1,18 @@
-Configure miss: gcc option to enable large file support
-Configure miss: gcc option to enable large file support
-Configure miss: gcc option to enable large file support
+Configure miss: __assume()
+Configure miss: __assume()
+Configure miss: __assume()
+Configure miss: __assume()
 Configure miss: gzopen in -lz
+Configure miss: i686-generic-linux-gnu-file
 Configure miss: libbz2
 Configure miss: whether Intel CET is enabled
 Configure miss: whether Intel CET is enabled
 Configure miss: whether Intel CET is enabled
 Configure miss: whether Intel CET is enabled
+Configure miss: whether the -Werror option is usable
+Configure miss: whether the -Werror option is usable
+Configure miss: whether the -Werror option is usable
+Configure miss: whether the -Werror option is usable
+Configure miss: x86_64-generic-linux-gnu-file
+Configure miss: x86_64-generic-linux-gnu-file
+Configure miss: x86_64-generic-linux-gnu-file
