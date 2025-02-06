@@ -9,7 +9,7 @@
 #
 Name     : pcre2
 Version  : 10.45
-Release  : 58
+Release  : 59
 URL      : https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz
 Source0  : https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz
 Source1  : https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz.sig
@@ -134,6 +134,9 @@ popd
 pushd ..
 cp -a pcre2-10.45 buildavx2
 popd
+pushd ..
+cp -a pcre2-10.45 buildapx
+popd
 
 %build
 ## build_prepend content
@@ -143,7 +146,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1738796828
+export SOURCE_DATE_EPOCH=1738859189
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -215,6 +218,23 @@ LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS -march=x86-64-v3 "
 --enable-jit=auto
 make  %{?_smp_mflags}
 popd
+unset PKG_CONFIG_PATH
+pushd ../buildapx/
+## build_prepend content
+export CFLAGS="$CFLAGS -mshstk"
+## build_prepend end
+GOAMD64=v3
+CFLAGS="$CLEAR_INTERMEDIATE_CFLAGS -march=x86-64-v3 -mapxf -mavx10.1 -Wl,-z,x86-64-v3 "
+CXXFLAGS="$CLEAR_INTERMEDIATE_CXXFLAGS -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS -march=x86-64-v3 -mapxf -mavx10.1 -Wl,-z,x86-64-v3 "
+FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS -march=x86-64-v3 -mapxf -mavx10.1 "
+LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS -march=x86-64-v3 "
+%configure --host=x86_64-clr-linux-gnu --disable-static --enable-pcre2-16 \
+--enable-pcre2-32 \
+--enable-unicode \
+--enable-jit=auto
+make  %{?_smp_mflags}
+popd
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
@@ -224,6 +244,8 @@ make %{?_smp_mflags} check
 cd ../build32;
 make %{?_smp_mflags} check || :
 cd ../buildavx2;
+make %{?_smp_mflags} check || :
+cd ../buildapx;
 make %{?_smp_mflags} check || :
 
 %install
@@ -251,7 +273,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1738796828
+export SOURCE_DATE_EPOCH=1738859189
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/pcre2
 cp %{_builddir}/pcre2-%{version}/cmake/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/pcre2/77976f406ba34009d9ba5a43b882fe6de68e5175 || :
@@ -275,9 +297,14 @@ GOAMD64=v3
 pushd ../buildavx2/
 %make_install_v3
 popd
+GOAMD64=v3
+pushd ../buildapx/
+%make_install_va
+popd
 GOAMD64=v2
 %make_install
 /usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
+/usr/bin/elf-move.py apx %{buildroot}-va %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -286,6 +313,8 @@ GOAMD64=v2
 %defattr(-,root,root,-)
 /V3/usr/bin/pcre2grep
 /V3/usr/bin/pcre2test
+/VA/usr/bin/pcre2grep
+/VA/usr/bin/pcre2test
 /usr/bin/pcre2-config
 /usr/bin/pcre2grep
 /usr/bin/pcre2test
@@ -424,6 +453,10 @@ GOAMD64=v2
 /V3/usr/lib64/libpcre2-32.so.0.14.0
 /V3/usr/lib64/libpcre2-8.so.0.14.0
 /V3/usr/lib64/libpcre2-posix.so.3.0.6
+/VA/usr/lib64/libpcre2-16.so.0.14.0
+/VA/usr/lib64/libpcre2-32.so.0.14.0
+/VA/usr/lib64/libpcre2-8.so.0.14.0
+/VA/usr/lib64/libpcre2-posix.so.3.0.6
 /usr/lib64/libpcre2-16.so.0
 /usr/lib64/libpcre2-16.so.0.14.0
 /usr/lib64/libpcre2-32.so.0
